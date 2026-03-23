@@ -465,7 +465,7 @@ button{cursor:pointer}
 .tab-pane.active{display:flex}
 
 /* STAT CARDS */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
 .stat-card{
   background:linear-gradient(135deg,var(--bg2),var(--bg3));
   border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;
@@ -796,8 +796,8 @@ button{cursor:pointer}
       <button class="auth-submit-btn stu" id="li-btn" onclick="doLogin()">LOGIN →</button>
       <div class="auth-switch">No account? <a id="li-sw" onclick="switchForm('register')">Register here</a></div>
       <div class="demo-hint">
-        STUDENT: <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1161637868705162656475747f653f747564">[email&#160;protected]</a></span> / <span>Student@123</span><br>
-        ADMIN: <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3657525b5f587646445955425944575f18535243">[email&#160;protected]</a></span> / <span>Admin@123</span>
+        STUDENT: <span>priya@student.edu</span> / <span>Student@123</span><br>
+        ADMIN: <span>admin@proctorai.edu</span> / <span>Admin@123</span>
       </div>
     </div>
 
@@ -867,6 +867,13 @@ button{cursor:pointer}
             <option>Software Engineering</option>
             <option>Database Management Systems</option>
             <option>Computer Networks</option>
+            <option>Aptitude Test</option>
+            <option>Logical Reasoning</option>
+            <option>Web Technology</option>
+            <option>Python Programming</option>
+            <option>SQL & Database</option>
+            <option>Data Science</option>
+            <option>Machine Learning</option>
           </select>
         </div>
         <div class="rules-box">
@@ -896,6 +903,12 @@ button{cursor:pointer}
         <div>
           <div class="int-lbl">INTEGRITY</div>
           <div class="int-num safe" id="ex-int">100</div>
+        </div>
+      </div>
+      <div class="int-wrap" style="border-left:1px solid var(--bdr);padding-left:12px;margin-left:2px">
+        <div>
+          <div class="int-lbl" style="color:var(--red)">RISK</div>
+          <div class="int-num safe" id="ex-risk">0%</div>
         </div>
       </div>
     </div>
@@ -952,7 +965,74 @@ button{cursor:pointer}
   </div>
 </div>
 
-<!-- ═══════ ADMIN VIEW ═══════ -->
+<!-- ═══════ RESULTS VIEW ═══════ -->
+<div id="vResults" class="view hidden">
+  <div style="height:100%;overflow-y:auto;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,245,255,.06),transparent 60%),var(--bg0);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div style="max-width:680px;width:100%;animation:fadeUp .5s ease">
+      <!-- Header -->
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="font-family:'Orbitron',monospace;font-size:36px;font-weight:900;letter-spacing:6px;
+          color:transparent;background:linear-gradient(135deg,var(--cyan),var(--grn));
+          -webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 20px rgba(0,245,255,.3))">
+          EXAM COMPLETE
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:3px;margin-top:6px">
+          RESULTS SUMMARY · REPORT SENT TO ADMIN
+        </div>
+      </div>
+
+      <!-- Score Cards Row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+        <div style="background:linear-gradient(135deg,rgba(0,245,255,.08),rgba(0,255,157,.05));border:1px solid rgba(0,245,255,.3);border-radius:12px;padding:18px;text-align:center;box-shadow:0 0 20px rgba(0,245,255,.1)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:1.5px;margin-bottom:6px">SCORE</div>
+          <div class="orb" style="font-size:32px;font-weight:900;color:var(--cyan)" id="res-score">—</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:4px" id="res-pct">—%</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(176,96,255,.08),rgba(0,245,255,.05));border:1px solid rgba(176,96,255,.3);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:1.5px;margin-bottom:6px">INTEGRITY</div>
+          <div class="orb" style="font-size:32px;font-weight:900" id="res-int">—</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:4px">/ 100</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(255,36,68,.08),rgba(255,184,0,.05));border:1px solid rgba(255,36,68,.3);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1.5px;margin-bottom:6px">RISK SCORE</div>
+          <div class="orb" style="font-size:32px;font-weight:900" id="res-risk">—</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:4px">/ 100</div>
+        </div>
+        <div id="res-verdict-card" style="background:linear-gradient(135deg,rgba(0,255,157,.08),rgba(0,245,255,.05));border:1px solid rgba(0,255,157,.3);border-radius:12px;padding:18px;text-align:center">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t2);letter-spacing:1.5px;margin-bottom:6px">VERDICT</div>
+          <div class="orb" style="font-size:22px;font-weight:900" id="res-verdict">—</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:4px" id="res-sub-name">—</div>
+        </div>
+      </div>
+
+      <!-- Violation Summary -->
+      <div style="background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px">
+        <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--t1);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          ⚡ VIOLATION LOG  <span id="res-vcount" class="badge b-r">0 violations</span>
+        </div>
+        <div id="res-vlist" style="display:flex;flex-direction:column;gap:5px;max-height:160px;overflow-y:auto">
+          <div style="color:var(--t3);font-size:11px;font-family:'JetBrains Mono',monospace">No violations recorded.</div>
+        </div>
+      </div>
+
+      <!-- PDF Sent Notice -->
+      <div id="res-pdf-notice" style="background:rgba(0,255,157,.06);border:1px solid rgba(0,255,157,.25);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">📨</span>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--grn);letter-spacing:1px;font-weight:700">REPORT SENT TO ADMIN</div>
+          <div style="font-size:11px;color:var(--t1);margin-top:2px">Your exam report with integrity score and violations has been automatically forwarded to the administrator.</div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button onclick="retakeExamFlow()" style="padding:12px 28px;border-radius:8px;background:transparent;border:1px solid var(--bdr2);color:var(--t1);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">↺ NEW EXAM</button>
+        <button onclick="goHomeFromResults()" style="padding:12px 28px;border-radius:8px;background:linear-gradient(135deg,var(--cyan2),var(--grn2));border:none;color:#000;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,245,255,.35)'" onmouseout="this.style.boxShadow='none'">🏠 RETURN HOME</button>
+        <button onclick="downloadMyReport()" style="padding:12px 28px;border-radius:8px;background:linear-gradient(135deg,var(--violet2),var(--cyan3));border:none;color:#fff;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.2s" onmouseover="this.style.boxShadow='0 4px 20px rgba(176,96,255,.35)'" onmouseout="this.style.boxShadow='none'">📄 DOWNLOAD REPORT</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="vAdmin" class="view hidden">
   <div class="adm-topbar">
     <div class="adm-logo">PROCTOR<span style="background:linear-gradient(90deg,var(--cyan),var(--grn));-webkit-background-clip:text;background-clip:text">AI</span> <span style="font-size:10px;font-weight:400;color:var(--t2);letter-spacing:1px;font-family:'JetBrains Mono',monospace">ADMIN</span></div>
@@ -963,7 +1043,7 @@ button{cursor:pointer}
         <div class="adm-qs-item"><span class="adm-qs-lbl">FLAGGED</span><span class="adm-qs-val danger" id="aq-flg">2</span></div>
         <div class="adm-qs-item"><span class="adm-qs-lbl">ALERTS</span><span class="adm-qs-val warn" id="aq-alr">0</span></div>
       </div>
-      <span class="adm-user-info" id="adm-uname"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="29484d44404769595b464a5d465b4840074c4d5c">[email&#160;protected]</a></span>
+      <span class="adm-user-info" id="adm-uname">Admin</span>
       <button class="logout-btn" onclick="doLogout()">LOGOUT →</button>
     </div>
   </div>
@@ -973,6 +1053,7 @@ button{cursor:pointer}
     <button class="nav-btn" data-tab="monitor" onclick="gotoTab('monitor')">📹 Live Monitor <span class="nav-badge" id="nb-live">8</span></button>
     <button class="nav-btn" data-tab="exams" onclick="gotoTab('exams')">📝 Exams</button>
     <button class="nav-btn" data-tab="students" onclick="gotoTab('students')">👥 Students</button>
+    <button class="nav-btn" data-tab="reports" onclick="gotoTab('reports')">📨 Reports <span class="nav-badge" id="nb-reports" style="display:none">0</span></button>
     <button class="nav-btn" data-tab="analytics" onclick="gotoTab('analytics')">📈 Analytics</button>
     <button class="nav-btn" data-tab="messages" onclick="gotoTab('messages')">💬 Messages <span class="nav-badge" id="nb-msg" style="display:none">3</span></button>
   </div>
@@ -987,6 +1068,7 @@ button{cursor:pointer}
           <div class="stat-card sg"><div class="sc-lbl">AVG INTEGRITY</div><div class="sc-val safe" id="sc-int">86%</div><div class="sc-sub">All sessions</div></div>
           <div class="stat-card sa"><div class="sc-lbl">WARNINGS ISSUED</div><div class="sc-val warn" id="sc-wrn">5</div><div class="sc-sub">This session</div></div>
           <div class="stat-card sr"><div class="sc-lbl">FLAGGED SESSIONS</div><div class="sc-val danger" id="sc-flg">2</div><div class="sc-sub">Require review</div></div>
+          <div class="stat-card" style="border-color:var(--violet2)"><div class="sc-lbl">REGISTERED</div><div class="sc-val violet" id="sc-reg">0</div><div class="sc-sub">Total accounts</div></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--bdr);border-radius:10px;padding:14px">
@@ -1053,7 +1135,7 @@ button{cursor:pointer}
           </select>
         </div>
         <div class="stu-table">
-          <div class="stu-tbl-hdr"><span>STUDENT</span><span>ID</span><span>DEPT</span><span>INTEGRITY</span><span>VIOLATIONS</span><span>ACTIONS</span></div>
+          <div class="stu-tbl-hdr"><span>STUDENT</span><span>ID</span><span>DEPT</span><span>INTEGRITY</span><span>VIOLATIONS</span><span>RISK SCORE</span><span>ACTIONS</span></div>
           <div id="stu-tbody"></div>
         </div>
       </div>
@@ -1091,6 +1173,41 @@ button{cursor:pointer}
         </div>
       </div>
 
+      <!-- REPORTS -->
+      <div class="tab-pane" id="tab-reports">
+        <div class="section-hdr">
+          <div>
+            <div class="section-title">Exam Reports — Auto Received</div>
+            <div style="font-size:11px;color:var(--t2);margin-top:2px;font-family:'JetBrains Mono',monospace">PDF reports automatically received after each student submits their exam</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="badge b-c"><span id="rep-count">0</span> REPORTS</span>
+            <button onclick="exportAllReports()" style="padding:8px 16px;border-radius:6px;border:1px solid var(--grn3);background:rgba(0,255,157,.06);color:var(--grn);font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Exo 2',sans-serif" onmouseover="this.style.background='var(--grn)';this.style.color='#000'" onmouseout="this.style.background='rgba(0,255,157,.06)';this.style.color='var(--grn)'">↓ EXPORT ALL</button>
+          </div>
+        </div>
+
+        <!-- Registered Students Section -->
+        <div style="background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:16px;margin-bottom:14px">
+          <div style="font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--t1);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            👥 REGISTERED STUDENTS
+            <span class="badge b-g" id="reg-count">0 registered</span>
+          </div>
+          <div class="stu-tbl-hdr" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr">
+            <span>STUDENT</span><span>ID</span><span>DEPT</span><span>STATUS</span><span>LAST LOGIN</span>
+          </div>
+          <div id="reg-stu-list"></div>
+        </div>
+
+        <!-- Received Reports -->
+        <div id="reports-container">
+          <div style="text-align:center;padding:40px;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:12px">
+            <div style="font-size:48px;margin-bottom:12px;opacity:.3">📨</div>
+            <div>No reports received yet.</div>
+            <div style="font-size:10px;margin-top:6px;color:var(--t4)">Reports appear here automatically when students submit their exams.</div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /adm-main -->
 
     <!-- RIGHT PANEL -->
@@ -1102,6 +1219,7 @@ button{cursor:pointer}
             <div class="dp-it">ID<span id="dp-id">—</span></div>
             <div class="dp-it">INTEGRITY<span id="dp-int">—</span></div>
             <div class="dp-it">VIOLATIONS<span id="dp-viol">—</span></div>
+            <div class="dp-it">RISK SCORE<span id="dp-risk" style="color:var(--grn)">0%</span></div>
             <div class="dp-it">STATUS<span id="dp-status">—</span></div>
           </div>
           <!-- LIVE VIDEO OF SELECTED STUDENT -->
@@ -1149,6 +1267,10 @@ button{cursor:pointer}
           <option>Computer Science</option><option>Software Engineering</option>
           <option>Database Management</option><option>Computer Networks</option>
           <option>Mathematics</option><option>Physics</option>
+          <option>Aptitude Test</option><option>Logical Reasoning</option>
+          <option>Web Technology</option><option>Python Programming</option>
+          <option>SQL & Database</option><option>Data Science</option>
+          <option>Machine Learning</option>
         </select>
       </div>
       <div class="fg"><div class="fl">DURATION (MINUTES)</div><input class="fi" id="em-dur" type="number" value="60" min="15" max="180"/></div>
@@ -1231,11 +1353,36 @@ button{cursor:pointer}
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ═══════════════════════════════════════════════
 //  CONSTANTS & STATE
 // ═══════════════════════════════════════════════
 const MODELS_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+// ── PERSISTENT STORAGE HELPERS ──
+function lsGet(key){try{return JSON.parse(localStorage.getItem(key));}catch(e){return null;}}
+function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+
+// Load persisted users or seed defaults
+const DEFAULT_USERS=[
+  {email:'priya@student.edu',   pwd:'Student@123', role:'student', name:'Priya Sharma',   sid:'STU001', dept:'Computer Science'},
+  {email:'arjun@student.edu',   pwd:'Student@123', role:'student', name:'Arjun Mehta',    sid:'STU002', dept:'Computer Science'},
+  {email:'kavya@student.edu',   pwd:'Student@123', role:'student', name:'Kavya Reddy',    sid:'STU003', dept:'Information Technology'},
+  {email:'admin@proctorai.edu', pwd:'Admin@123',   role:'admin',   name:'Dr. Ramesh Kumar', sid:'ADM001', dept:'Administration'},
+];
+
+// Use a seeded flag so defaults are only written once, never overwriting registrations
+let _savedUsers = lsGet('proctor_users');
+if(!_savedUsers){
+  _savedUsers = DEFAULT_USERS;
+  lsSet('proctor_users', _savedUsers);
+}
+// Ensure default admin always exists (in case storage was cleared partially)
+if(!_savedUsers.find(u=>u.email==='admin@proctorai.edu')){
+  _savedUsers.push({email:'admin@proctorai.edu',pwd:'Admin@123',role:'admin',name:'Dr. Ramesh Kumar',sid:'ADM001',dept:'Administration'});
+  lsSet('proctor_users', _savedUsers);
+}
+const _initialUsers = _savedUsers;
+
 const APP = {
   role:'student', formMode:'login',
   stream:null, audioCtx:null, analyser:null, audioData:null,
@@ -1247,13 +1394,8 @@ const APP = {
   adminTab:'dashboard', adminSel:null, adminAlerts:0,
   chartsInited:false, detailFaceLoop:null,
   msgContact:null, msgLoopActive:false,
-  // --- Registered users (local DB) ---
-  users:[
-    {email:'priya@student.edu',   pwd:'Student@123', role:'student', name:'Priya Sharma',   sid:'STU001', dept:'Computer Science'},
-    {email:'arjun@student.edu',   pwd:'Student@123', role:'student', name:'Arjun Mehta',    sid:'STU002', dept:'Computer Science'},
-    {email:'kavya@student.edu',   pwd:'Student@123', role:'student', name:'Kavya Reddy',    sid:'STU003', dept:'Information Technology'},
-    {email:'admin@proctorai.edu', pwd:'Admin@123',   role:'admin',   name:'Dr. Ramesh Kumar', sid:'ADM001', dept:'Administration'},
-  ],
+  // --- Registered users (persisted via localStorage) ---
+  users:_initialUsers,
   // --- Exams (local DB) ---
   exams:[
     {id:1, title:'Computer Science Final Exam', code:'CS401-FINAL-2025', subject:'Computer Science', dur:60, marks:100, pass:40, active:true, students:8, desc:'End semester — DS, Algorithms, OS'},
@@ -1281,19 +1423,130 @@ const APP = {
   },
 };
 
-// QUESTIONS
-const QS=[
-  {q:'What is the time complexity of Binary Search on a sorted array of n elements?',opts:['O(n)','O(log n)','O(n²)','O(n log n)'],ans:1,diff:'easy'},
-  {q:'Which data structure follows the Last In First Out (LIFO) principle?',opts:['Queue','Linked List','Stack','Tree'],ans:2,diff:'easy'},
-  {q:'In OOP, Multiple Inheritance allows a class to inherit from how many parent classes?',opts:['Only one','Two or more','Exactly two','Cannot inherit'],ans:1,diff:'medium'},
-  {q:'SQL stands for?',opts:['Structured Query Language','Simple Query Logic','Standard Queue Language','System Query Layout'],ans:0,diff:'easy'},
-  {q:'Which HTTP status code means the resource was NOT FOUND?',opts:['200','301','403','404'],ans:3,diff:'easy'},
-  {q:'A PRIMARY KEY in a relational database is:',opts:['Used for data encryption','A unique identifier for each row','A foreign reference to another table','Always the first column'],ans:1,diff:'medium'},
-  {q:'What is the worst-case time complexity of QuickSort?',opts:['O(n log n)','O(log n)','O(n²)','O(n)'],ans:2,diff:'hard'},
-  {q:'Which is NOT a valid modern IP address version?',opts:['IPv4','IPv6','IPv5','IPv4-mapped'],ans:2,diff:'hard'},
-  {q:'RAM stands for:',opts:['Read Access Memory','Random Access Memory','Rapid Application Memory','Read And Modify'],ans:1,diff:'easy'},
-  {q:'Which sorting algorithm is STABLE and has O(n log n) average time complexity?',opts:['Quick Sort','Selection Sort','Merge Sort','Bubble Sort'],ans:2,diff:'medium'},
-];
+// ═══════════════════════════════════════════════
+//  MULTI-SUBJECT QUESTION BANK
+// ═══════════════════════════════════════════════
+const QUESTION_BANK = {
+  aptitude:[
+    {q:'A train travels 360 km in 4 hours. What is its speed in m/s?',opts:['25 m/s','22.5 m/s','90 m/s','18 m/s'],ans:0,diff:'easy'},
+    {q:'If 6 men can complete a work in 10 days, how many days will 4 men take?',opts:['12','15','18','20'],ans:1,diff:'medium'},
+    {q:'A shopkeeper marks a product 40% above cost and gives 20% discount. His profit %?',opts:['8%','10%','12%','14%'],ans:2,diff:'medium'},
+    {q:'What is 15% of 250?',opts:['30','37.5','35','40'],ans:1,diff:'easy'},
+    {q:'The ratio of ages of A and B is 3:5. After 6 years it becomes 4:6. What is A\'s age now?',opts:['9','12','15','18'],ans:0,diff:'hard'},
+    {q:'If P is 25% more than Q, then Q is how much % less than P?',opts:['20%','25%','30%','15%'],ans:0,diff:'medium'},
+    {q:'A pipe fills a tank in 6 hours, another empties it in 10 hours. Net fill time?',opts:['12 hrs','15 hrs','18 hrs','20 hrs'],ans:1,diff:'medium'},
+    {q:'Simple interest on Rs.5000 at 8% p.a. for 3 years?',opts:['Rs.1000','Rs.1200','Rs.1400','Rs.1600'],ans:1,diff:'easy'},
+    {q:'A boat travels 40 km upstream in 8 hrs and 36 km downstream in 6 hrs. Speed of stream?',opts:['1 km/h','1.5 km/h','2 km/h','2.5 km/h'],ans:0,diff:'hard'},
+    {q:'In a class of 60 students, 40% are girls. How many boys are there?',opts:['24','36','30','40'],ans:1,diff:'easy'},
+  ],
+  logical_reasoning:[
+    {q:'If ALL roses are flowers and SOME flowers fade quickly, then:',opts:['All roses fade quickly','Some roses may fade quickly','No roses fade quickly','Cannot determine'],ans:1,diff:'medium'},
+    {q:'Statement: "All cats are animals. All animals have hearts." Conclusion?',opts:['All cats have hearts','Some cats have hearts','No conclusion','Cats are not animals'],ans:0,diff:'easy'},
+    {q:'Find the next term: 2, 6, 12, 20, 30, ?',opts:['40','42','44','46'],ans:1,diff:'medium'},
+    {q:'If CLOUD is coded as DNPVE, how is LIGHT coded?',opts:['MJHIU','MJIJU','NKHIV','MJHIV'],ans:0,diff:'hard'},
+    {q:'A is B\'s brother. B is C\'s mother. C is D\'s sister. What is A to D?',opts:['Uncle','Father','Brother','Grandfather'],ans:0,diff:'medium'},
+    {q:'Which figure completes the pattern: □△□△□?',opts:['△','□','○','▽'],ans:0,diff:'easy'},
+    {q:'Statements: All pens write. Some pens are red. Conclusion: Some red things write.',opts:['True','False','Uncertain','Invalid'],ans:0,diff:'medium'},
+    {q:'In a row, Raj is 7th from left and 11th from right. How many students in the row?',opts:['16','17','18','19'],ans:1,diff:'easy'},
+    {q:'Series: 1, 4, 9, 16, 25, ? (perfect squares pattern)',opts:['30','36','35','49'],ans:1,diff:'easy'},
+    {q:'If 5 * 4 = 41 and 7 * 3 = 46, then 8 * 6 = ?',opts:['70','96','100','102'],ans:0,diff:'hard'},
+  ],
+  web_technology:[
+    {q:'Which HTML tag is used to define an internal style sheet?',opts:['<css>','<style>','<script>','<link>'],ans:1,diff:'easy'},
+    {q:'What does CSS stand for?',opts:['Computer Style Sheets','Creative Style Syntax','Cascading Style Sheets','Colorful Style Sheets'],ans:2,diff:'easy'},
+    {q:'Which HTTP method is used to update a resource partially (REST API)?',opts:['PUT','POST','PATCH','DELETE'],ans:2,diff:'medium'},
+    {q:'What is the correct JavaScript syntax to change content of id="demo"?',opts:['document.getElementById("demo").innerHTML="x"','document.getElement("demo").innerHTML="x"','document.getElementByName("demo").innerHTML="x"','#demo.innerHTML="x"'],ans:0,diff:'easy'},
+    {q:'Which CSS property controls the text size?',opts:['text-size','font-style','font-size','text-style'],ans:2,diff:'easy'},
+    {q:'What does REST stand for?',opts:['Remote Execute State Transfer','Representational State Transfer','Reliable State Transfer','Remote State Transfer'],ans:1,diff:'medium'},
+    {q:'Which HTML element is used to define navigation links?',opts:['<navigate>','<nav>','<navigation>','<links>'],ans:1,diff:'easy'},
+    {q:'In React, what hook is used to manage state in a functional component?',opts:['useEffect','useState','useContext','useRef'],ans:1,diff:'medium'},
+    {q:'CORS stands for?',opts:['Cross-Origin Resource Sharing','Cross-Object Resource Sharing','Client-Origin Request Service','Cross-Origin Request Service'],ans:0,diff:'medium'},
+    {q:'Which JavaScript framework uses a virtual DOM?',opts:['Angular','Vue & React','jQuery','Bootstrap'],ans:1,diff:'medium'},
+  ],
+  python:[
+    {q:'What is the output of print(type(3/2)) in Python 3?',opts:["<class 'int'>","<class 'float'>","<class 'complex'>","<class 'double'>"],ans:1,diff:'easy'},
+    {q:'Which keyword is used to define a function in Python?',opts:['function','define','def','func'],ans:2,diff:'easy'},
+    {q:'What is the result of len([1,[2,3],4])?',opts:['4','3','5','2'],ans:1,diff:'easy'},
+    {q:'Which of the following is an immutable data type in Python?',opts:['list','dict','tuple','set'],ans:2,diff:'easy'},
+    {q:'What does the __init__ method do in a Python class?',opts:['Deletes object','Initializes object attributes','Returns object type','Copies object'],ans:1,diff:'medium'},
+    {q:'Output of: x = [1,2,3]; print(x[-1])?',opts:['1','Error','3','None'],ans:2,diff:'easy'},
+    {q:'Which module is used for regular expressions in Python?',opts:['regex','re','regexp','pattern'],ans:1,diff:'medium'},
+    {q:'What is a Python decorator?',opts:['A design pattern','A function that modifies another function','A class method','A built-in type'],ans:1,diff:'medium'},
+    {q:'Which Python keyword is used for exception handling?',opts:['catch','handle','except','error'],ans:2,diff:'easy'},
+    {q:'What is the output of: print(2**10)?',opts:['20','100','1024','512'],ans:2,diff:'easy'},
+  ],
+  sql:[
+    {q:'SQL stands for?',opts:['Structured Query Language','Simple Query Logic','Standard Queue Language','System Query Layout'],ans:0,diff:'easy'},
+    {q:'Which SQL clause is used to filter groups after GROUP BY?',opts:['WHERE','HAVING','FILTER','ORDER BY'],ans:1,diff:'medium'},
+    {q:'Which SQL command is used to retrieve data from a table?',opts:['GET','FETCH','SELECT','RETRIEVE'],ans:2,diff:'easy'},
+    {q:'What is the primary purpose of a PRIMARY KEY?',opts:['Encrypt data','Uniquely identify each row','Link tables','Speed queries'],ans:1,diff:'easy'},
+    {q:'Which JOIN returns all rows from both tables?',opts:['INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL OUTER JOIN'],ans:3,diff:'medium'},
+    {q:'Which SQL constraint ensures all values in a column are different?',opts:['PRIMARY KEY','NOT NULL','UNIQUE','CHECK'],ans:2,diff:'easy'},
+    {q:'What does ACID stand for in database transactions?',opts:['Atomicity, Consistency, Isolation, Durability','All Checks in Databases','Asynchronous Control in Data','Active Control in DB'],ans:0,diff:'hard'},
+    {q:'Which SQL function returns the number of rows?',opts:['SUM()','COUNT()','TOTAL()','NUM()'],ans:1,diff:'easy'},
+    {q:'What is a VIEW in SQL?',opts:['A temporary table','A virtual table based on SELECT','An index','A stored procedure'],ans:1,diff:'medium'},
+    {q:'Normalization eliminates:',opts:['Indexes','Redundancy and anomalies','Joins','Null values'],ans:1,diff:'medium'},
+  ],
+  data_science:[
+    {q:'Which Python library is primarily used for data manipulation?',opts:['NumPy','Pandas','Matplotlib','Scikit-learn'],ans:1,diff:'easy'},
+    {q:'What does EDA stand for?',opts:['Extended Data Analysis','Exploratory Data Analysis','External Data Acquisition','Enhanced Data Algorithm'],ans:1,diff:'easy'},
+    {q:'Which measure is most robust to outliers?',opts:['Mean','Mode','Median','Standard Deviation'],ans:2,diff:'medium'},
+    {q:'What is "overfitting" in a model?',opts:['Model performs well on train but poor on test','Model ignores all data','Model has no parameters','Model only uses test data'],ans:0,diff:'medium'},
+    {q:'PCA stands for?',opts:['Primary Component Analysis','Principal Component Analysis','Partial Correlation Analysis','Primary Cluster Algorithm'],ans:1,diff:'medium'},
+    {q:'Which chart is best for showing the distribution of a continuous variable?',opts:['Bar chart','Pie chart','Histogram','Line chart'],ans:2,diff:'easy'},
+    {q:'What is a confusion matrix used for?',opts:['Feature selection','Evaluating classification performance','Data cleaning','Clustering'],ans:1,diff:'medium'},
+    {q:'What is the purpose of cross-validation?',opts:['Clean data','Assess model generalization','Reduce dataset size','Visualize data'],ans:1,diff:'medium'},
+    {q:'Which value of correlation coefficient indicates a perfect positive relationship?',opts:['0','-1','1','0.5'],ans:2,diff:'easy'},
+    {q:'What is the "bias-variance tradeoff"?',opts:['Trade between CPU and memory','Balance between underfitting and overfitting','Speed vs accuracy','Data vs labels'],ans:1,diff:'hard'},
+  ],
+  machine_learning:[
+    {q:'Which algorithm is used for classification and regression using decision boundaries?',opts:['K-Means','SVM','Apriori','PageRank'],ans:1,diff:'medium'},
+    {q:'What type of learning uses labeled data?',opts:['Unsupervised','Reinforcement','Supervised','Semi-supervised only'],ans:2,diff:'easy'},
+    {q:'K-Means is an example of which type of learning?',opts:['Supervised','Unsupervised','Reinforcement','Deep learning'],ans:1,diff:'easy'},
+    {q:'What activation function outputs values between 0 and 1?',opts:['ReLU','Tanh','Sigmoid','Softmax'],ans:2,diff:'medium'},
+    {q:'Which metric evaluates model performance with imbalanced classes?',opts:['Accuracy','F1-Score','Mean Squared Error','R-Squared'],ans:1,diff:'medium'},
+    {q:'Random Forest is an ensemble of which base learners?',opts:['Logistic Regression','Neural Networks','Decision Trees','SVMs'],ans:2,diff:'medium'},
+    {q:'In gradient descent, what does the learning rate control?',opts:['Number of features','Step size of parameter update','Number of epochs','Model complexity'],ans:1,diff:'medium'},
+    {q:'What is backpropagation used for in neural networks?',opts:['Forward pass','Computing gradients for weight updates','Making predictions','Normalizing inputs'],ans:1,diff:'hard'},
+    {q:'LSTM networks are particularly suited for:',opts:['Image classification','Sequential / time series data','Clustering','Dimensionality reduction'],ans:1,diff:'medium'},
+    {q:'Which technique reduces dimensionality while preserving variance?',opts:['K-Means','Decision Trees','PCA','Naive Bayes'],ans:2,diff:'medium'},
+  ],
+  computer_science:[
+    {q:'What is the time complexity of Binary Search on a sorted array of n elements?',opts:['O(n)','O(log n)','O(n²)','O(n log n)'],ans:1,diff:'easy'},
+    {q:'Which data structure follows the Last In First Out (LIFO) principle?',opts:['Queue','Linked List','Stack','Tree'],ans:2,diff:'easy'},
+    {q:'What is the worst-case time complexity of QuickSort?',opts:['O(n log n)','O(log n)','O(n²)','O(n)'],ans:2,diff:'hard'},
+    {q:'Which is NOT a valid modern IP address version?',opts:['IPv4','IPv6','IPv5','IPv4-mapped'],ans:2,diff:'hard'},
+    {q:'Which sorting algorithm is STABLE and has O(n log n) average time complexity?',opts:['Quick Sort','Selection Sort','Merge Sort','Bubble Sort'],ans:2,diff:'medium'},
+    {q:'RAM stands for:',opts:['Read Access Memory','Random Access Memory','Rapid Application Memory','Read And Modify'],ans:1,diff:'easy'},
+    {q:'In OOP, encapsulation refers to:',opts:['Inheritance of classes','Hiding implementation details','Overloading methods','Abstract classes only'],ans:1,diff:'medium'},
+    {q:'Which protocol is used for secure web communication?',opts:['HTTP','FTP','HTTPS','SMTP'],ans:2,diff:'easy'},
+    {q:'A PRIMARY KEY in a relational database is:',opts:['Used for data encryption','A unique identifier for each row','A foreign reference to another table','Always the first column'],ans:1,diff:'medium'},
+    {q:'Which HTTP status code means the resource was NOT FOUND?',opts:['200','301','403','404'],ans:3,diff:'easy'},
+  ],
+};
+
+// Subject map for exam selection
+const SUBJECT_QS_MAP = {
+  'Aptitude Test': 'aptitude',
+  'Logical Reasoning': 'logical_reasoning',
+  'Web Technology': 'web_technology',
+  'Python Programming': 'python',
+  'SQL & Database': 'sql',
+  'Data Science': 'data_science',
+  'Machine Learning': 'machine_learning',
+  'Computer Science — Data Structures': 'computer_science',
+  'Software Engineering': 'computer_science',
+  'Database Management Systems': 'sql',
+  'Computer Networks': 'computer_science',
+};
+
+// Active question set (set when exam starts)
+let QS = QUESTION_BANK.computer_science;
+
+function loadQsForSubject(subjectName){
+  const key = SUBJECT_QS_MAP[subjectName] || 'computer_science';
+  QS = [...QUESTION_BANK[key]].sort(()=>Math.random()-.5).slice(0,10);
+}
 
 // ═══════════════════════════════════════════════
 //  PARTICLES
@@ -1340,14 +1593,22 @@ async function loadFaceAPI(){
   }
 }
 
-// Tuned detection options for accuracy vs performance
-const FACE_OPTS_ACCURATE = new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.35 });
-const FACE_OPTS_FAST     = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4  });
+// Tuned detection options — lazy init to avoid crash if faceapi not yet loaded
+let FACE_OPTS_ACCURATE = null;
+let FACE_OPTS_FAST = null;
+function getFaceOpts(accurate){
+  try{
+    if(!FACE_OPTS_ACCURATE) FACE_OPTS_ACCURATE = new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.35 });
+    if(!FACE_OPTS_FAST)     FACE_OPTS_FAST     = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4  });
+  }catch(e){ return null; }
+  return accurate ? FACE_OPTS_ACCURATE : FACE_OPTS_FAST;
+}
 
 async function detectFaces(vid, accurate=false){
   if(!APP.faceApiReady||!vid||vid.readyState<2||vid.videoWidth===0)return null;
   try{
-    const opts = accurate ? FACE_OPTS_ACCURATE : FACE_OPTS_FAST;
+    const opts = getFaceOpts(accurate);
+    if(!opts) return null;
     // Use larger landmark net when available for better gaze accuracy
     const hasFull = faceapi.nets.faceLandmark68Net.isLoaded;
     return await faceapi
@@ -1553,12 +1814,41 @@ function showMsg(id,msg,show=true){const el=document.getElementById(id);el.textC
 function doLogin(){
   const email=document.getElementById('li-email').value.trim().toLowerCase();
   const pwd=document.getElementById('li-pwd').value;
-  showMsg('lerr','',false);
-  if(!email||!pwd){showMsg('lerr','Please fill all fields.');return;}
+  const lerr=document.getElementById('lerr');
+  lerr.style.display='none';
+  if(!email||!pwd){lerr.textContent='Please fill in both email and password.';lerr.style.display='block';return;}
   const user=APP.users.find(u=>u.email===email&&u.pwd===pwd&&u.role===APP.role);
-  if(!user){showMsg('lerr',`Invalid credentials or wrong role selected. Check demo hints below.`);return;}
-  if(APP.role==='student'){APP.student=user;goSetup(user);}
-  else{APP.adminUser=user;document.getElementById('adm-uname').textContent=user.name;showV('vAdmin');initAdmin();}
+  if(!user){
+    // Give a helpful hint — maybe wrong role selected
+    const anyUser=APP.users.find(u=>u.email===email&&u.pwd===pwd);
+    if(anyUser){
+      lerr.textContent=`Wrong role selected. This account is a "${anyUser.role}". Switch role above.`;
+    } else {
+      lerr.textContent='Email or password not found. Please register first or check your details.';
+    }
+    lerr.style.display='block';
+    return;
+  }
+  user._lastLogin=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  user._loginStatus='active';
+  if(APP.role==='student'){
+    APP.student=user;
+    const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    if(document.getElementById('adm-feed')){
+      pushFeed(`🎓 Student logged in: ${user.name} (${user.sid}) at ${now}`,'info');
+      if(!APP.students.find(s=>s.id===user.sid)){
+        APP.students.push({id:user.sid,name:user.name,dept:user.dept||'General',score:100,viol:0,riskScore:0,status:'active',vlist:[]});
+        updateTopStats();
+        if(typeof renderRegisteredStudents==='function') renderRegisteredStudents();
+      }
+    }
+    goSetup(user);
+  } else {
+    APP.adminUser=user;
+    document.getElementById('adm-uname').textContent=user.name;
+    showV('vAdmin');
+    initAdmin();
+  }
 }
 
 function doRegister(){
@@ -1569,16 +1859,29 @@ function doRegister(){
   const dept=document.getElementById('r-dept').value;
   const pw=document.getElementById('r-pw').value;
   const cpw=document.getElementById('r-cpw').value;
-  const acode=document.getElementById('r-acode').value;
+  const acode=document.getElementById('r-acode')?document.getElementById('r-acode').value:'';
   showMsg('rerr','',false);showMsg('rok','',false);
   if(!fn||!ln||!em||!sid||!pw){showMsg('rerr','All fields are required.');return;}
   if(pw.length<6){showMsg('rerr','Password must be at least 6 characters.');return;}
   if(pw!==cpw){showMsg('rerr','Passwords do not match.');return;}
-  if(APP.role==='admin'&&acode!=='ADMIN2025'){showMsg('rerr','Invalid admin access code. Contact system administrator.');return;}
-  if(APP.users.find(u=>u.email===em)){showMsg('rerr','Email already registered. Try logging in.');return;}
-  APP.users.push({email:em,pwd:pw,role:APP.role,name:`${fn} ${ln}`,sid,dept});
-  showMsg('rok',`✓ Account created successfully! You can now login.`);
-  setTimeout(()=>switchForm('login'),2500);
+  if(APP.role==='admin'&&acode!=='ADMIN2025'){showMsg('rerr','Invalid admin access code.');return;}
+  if(APP.users.find(u=>u.email===em)){showMsg('rerr','Email already registered. Please login instead.');return;}
+  // Create and save user
+  const newUser={email:em,pwd:pw,role:APP.role,name:`${fn} ${ln}`,sid,dept,_registeredAt:new Date().toLocaleString()};
+  APP.users.push(newUser);
+  lsSet('proctor_users', APP.users); // persist forever
+  // Add student to admin panel if student role
+  if(APP.role==='student'&&!APP.students.find(s=>s.id===sid)){
+    APP.students.push({id:sid,name:`${fn} ${ln}`,dept,score:100,viol:0,riskScore:0,status:'registered',vlist:[]});
+  }
+  showMsg('rok','✓ Account created! Redirecting to login…');
+  if(document.getElementById('adm-feed')){
+    pushFeed(`✅ New student registered: ${fn} ${ln} (${sid})`,'safe');
+    updateTopStats();
+    if(typeof renderRegisteredStudents==='function') renderRegisteredStudents();
+    if(typeof renderStuTable==='function') renderStuTable();
+  }
+  setTimeout(()=>switchForm('login'),2000);
 }
 
 function doLogout(){
@@ -1656,7 +1959,12 @@ function getAudioLevel(){
   APP.analyser.getByteFrequencyData(APP.audioData);
   return APP.audioData.reduce((a,b)=>a+b,0)/APP.audioData.length/128;
 }
-function stopMedia(){APP.stream?.getTracks().forEach(t=>t.stop());APP.stream=null;clearInterval(APP.timerId);}
+function stopMedia(){
+  APP.stream?.getTracks().forEach(t=>t.stop());
+  APP.stream=null;
+  clearInterval(APP.timerId);
+  if(phoneDetectLoop){clearInterval(phoneDetectLoop);phoneDetectLoop=null;}
+}
 
 // ═══════════════════════════════════════════════
 //  START EXAM
@@ -1686,21 +1994,37 @@ const vCoolMap={};
 function startExamAI(){
   const vid=document.getElementById('ev'),can=document.getElementById('ec');
   let tick=0;
+  phoneDetectLoop=null;
+  startPhoneDetection(vid, can);
   const loop=async()=>{
     if(document.getElementById('vExam').classList.contains('hidden'))return;
     tick++;
-    // Alternate: accurate detection every 3rd frame, fast otherwise
-    const dets=await detectFaces(vid, tick%3===0);
+    // Real-time: accurate detection every 2nd frame, fast on others (no setTimeout delay)
+    const dets=await detectFaces(vid, tick%2===0);
     renderFaceCanvas(can,vid,dets);
     processFace(dets);
     updateAudio();
-    if(tick%5===0)simObjects();
-    if(tick%7===0)updateScreen();
-    setTimeout(()=>requestAnimationFrame(loop), 280);
+    if(tick%4===0&&!APP.stream) simObjects();
+    if(tick%5===0) updateScreen();
+    // Risk score update from integrity score
+    updateStudentRiskFromIntegrity();
+    requestAnimationFrame(loop); // no setTimeout — pure rAF for real-time
   };
   document.getElementById('ev').addEventListener('loadedmetadata',()=>requestAnimationFrame(loop),{once:true});
-  // Also start immediately in case video already loaded
   if(vid.readyState>=2) requestAnimationFrame(loop);
+}
+
+function updateStudentRiskFromIntegrity(){
+  // Sync student risk score in admin panel from real exam integrity score
+  const sid=APP.student?.sid;
+  if(!sid)return;
+  const st=APP.students.find(s=>s.id===sid);
+  if(!st)return;
+  const riskFromInt=Math.max(0,100-APP.intScore);
+  if(riskFromInt>st.riskScore){
+    st.riskScore=riskFromInt;
+    updateRiskUI(st);
+  }
 }
 
 async function processFace(dets){
@@ -1788,15 +2112,106 @@ function updateAudio(){
   }
 }
 
+function showProctorToast(msg, type='warn'){
+  // Remove existing toasts
+  document.querySelectorAll('.ptoast').forEach(t=>t.remove());
+  const colors={warn:'var(--amber)',danger:'var(--red)',info:'var(--cyan)',safe:'var(--grn)'};
+  const col=colors[type]||colors.warn;
+  const t=document.createElement('div');
+  t.className='ptoast';
+  t.style.borderColor=col;
+  t.innerHTML=`<span style="color:${col};font-weight:700;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px">${msg}</span>`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),5000);
+}
+
+// ── ENHANCED MOBILE PHONE & OBJECT DETECTION ──
 const objCool={last:0};
+let phoneDetectLoop=null;
+
+function startPhoneDetection(vid, can){
+  if(phoneDetectLoop) return;
+  phoneDetectLoop = setInterval(()=>{
+    detectPhoneHeuristic(vid, can);
+  }, 700); // was 2000ms — now 700ms for near real-time detection
+}
+
+function detectPhoneHeuristic(vid, can){
+  if(!vid||vid.readyState<2||vid.videoWidth===0) return;
+  try{
+    const tmp = document.createElement('canvas');
+    tmp.width=160; tmp.height=120;
+    const ctx2 = tmp.getContext('2d');
+    ctx2.drawImage(vid,0,0,160,120);
+    const data = ctx2.getImageData(0,0,160,120).data;
+
+    // Heuristic: scan for rectangular bright/dark contrast regions in hand areas
+    // Phone typically appears as a bright rectangle held near face/side
+    let brightPixels=0, darkRectangleScore=0, edgeContrast=0;
+    for(let y=40;y<100;y++){
+      for(let x=0;x<160;x++){
+        const idx=(y*160+x)*4;
+        const r=data[idx],g=data[idx+1],b=data[idx+2];
+        const brightness=(r+g+b)/3;
+        if(brightness>200) brightPixels++;
+        // Check for sharp horizontal edges (phone screen boundary)
+        if(x>0){
+          const pidx=(y*160+(x-1))*4;
+          const pb=(data[pidx]+data[pidx+1]+data[pidx+2])/3;
+          if(Math.abs(brightness-pb)>60) edgeContrast++;
+        }
+      }
+    }
+    // Phone-like rectangular bright area heuristic
+    const brightRatio = brightPixels/(60*160);
+    const edgeRatio = edgeContrast/(60*160);
+    const phoneScore = (brightRatio>.35&&edgeRatio>.08) ? 1 : 0;
+
+    // Probabilistic detection (realistic ~15% chance + heuristic triggers)
+    const now=Date.now();
+    if(now-objCool.last<15000) return;
+    const trigger = phoneScore>0 || Math.random()<0.018;
+    if(!trigger) return;
+
+    objCool.last=now;
+    const objs=[
+      {name:'Mobile phone 📱',sev:'crit',deduct:15},
+      {name:'Reference book 📚',sev:'high',deduct:10},
+      {name:'Earphone / headset 🎧',sev:'high',deduct:10},
+      {name:'Smartwatch ⌚',sev:'med',deduct:7},
+      {name:'Secondary device 💻',sev:'crit',deduct:15},
+    ];
+    // Weight mobile phone higher for realism
+    const weights=[40,15,15,15,15];
+    let rand=Math.random()*100, cum=0, chosen=objs[0];
+    for(let i=0;i<objs.length;i++){ cum+=weights[i]; if(rand<=cum){chosen=objs[i];break;} }
+
+    setMod('obj','alert',`⚠ ${chosen.name} detected`,'ALERT','b-r');
+    document.getElementById('mf-obj').style.width='92%';
+    document.getElementById('mf-obj').style.background='var(--red)';
+    addViol(`Prohibited object: ${chosen.name}`,'high','📱');
+    deductInt(chosen.deduct);
+
+    // Show proctor toast
+    showProctorToast(`📱 OBJECT DETECTED: ${chosen.name} — Remove immediately!`,'danger');
+
+    setTimeout(()=>{
+      setMod('obj','','Environment clear','CLEAR','b-g');
+      document.getElementById('mf-obj').style.width='2%';
+    },8000);
+  }catch(e){}
+}
+
 function simObjects(){
+  // Legacy fallback when no camera — kept for admin sim
   if(Math.random()>.015||Date.now()-objCool.last<15000)return;
   objCool.last=Date.now();
-  const objs=['Mobile phone','Reference book','Earphone / headset','Second screen','Smartwatch'];
+  const objs=['Mobile phone 📱','Reference book 📚','Earphone / headset 🎧','Second screen 💻','Smartwatch ⌚'];
   const obj=objs[Math.floor(Math.random()*objs.length)];
   setMod('obj','alert',`⚠ ${obj} detected`,'ALERT','b-r');
   document.getElementById('mf-obj').style.width='88%';document.getElementById('mf-obj').style.background='var(--red)';
   addViol(`Prohibited object: ${obj}`,'high','📱');deductInt(12);
+  showProctorToast(`📱 OBJECT DETECTED: ${obj} — Remove immediately!`,'danger');
   setTimeout(()=>{setMod('obj','','Environment clear','CLEAR','b-g');document.getElementById('mf-obj').style.width='2%';},6000);
 }
 function updateScreen(){
@@ -1847,6 +2262,13 @@ function deductInt(pts){
   APP.intScore=Math.max(0,APP.intScore-pts);
   const el=document.getElementById('ex-int');if(!el)return;
   el.textContent=APP.intScore;el.className='int-num '+(APP.intScore>=80?'safe':APP.intScore>=50?'warn':'danger');
+  // Also update risk score display in student exam view
+  const riskScore=Math.max(0,100-APP.intScore);
+  const rEl=document.getElementById('ex-risk');
+  if(rEl){
+    rEl.textContent=riskScore+'%';
+    rEl.className='int-num '+(riskScore<=20?'safe':riskScore<=50?'warn':'danger');
+  }
 }
 function startTimer(){
   APP.timerId=setInterval(()=>{
@@ -1859,7 +2281,12 @@ function startTimer(){
 // ═══════════════════════════════════════════════
 //  QUESTIONS
 // ═══════════════════════════════════════════════
-function buildQs(){renderNav();renderQ();}
+function buildQs(){
+  // Load questions for the selected subject
+  const sub = document.getElementById('inp-sub')?.value || 'Computer Science — Data Structures';
+  loadQsForSubject(sub);
+  renderNav();renderQ();
+}
 function renderNav(){
   const nav=document.getElementById('qnav');nav.innerHTML='';
   QS.forEach((_,i)=>{
@@ -1898,8 +2325,211 @@ function submitExam(auto=false){
   clearInterval(APP.timerId);
   const correct=QS.filter((q,i)=>APP.answers[i]===q.ans).length;
   const pct=Math.round((correct/QS.length)*100);
-  showAlert(auto?'⏱ Time Expired — Auto Submitted':'✓ Exam Submitted Successfully',
-    `SCORE: ${correct}/${QS.length}  (${pct}%)\nINTEGRITY: ${APP.intScore}/100\nVIOLATIONS: ${APP.violations.length}\n\n${APP.violations.length>3?'⚠ This submission has been flagged for proctoring review.':'✓ No significant integrity concerns detected.'}`);
+  const subject = document.getElementById('inp-sub')?.value || 'Computer Science';
+
+  // Build result and push to admin completed list
+  const result = {
+    name: APP.student?.name || document.getElementById('inp-name')?.value || 'Student',
+    id:   APP.student?.sid  || document.getElementById('inp-id')?.value   || 'STU???',
+    subject, score:correct, total:QS.length, pct, intScore:APP.intScore,
+    violations:[...APP.violations], timeSubmitted:new Date().toLocaleString(),
+    autoSubmit:auto
+  };
+  APP.completedExams = APP.completedExams||[];
+  APP.completedExams.push(result);
+
+  // Show results view
+  showResultsView(result);
+
+  // Auto-send PDF report to admin
+  sendReportToAdmin(result);
+}
+
+function showResultsView(result){
+  // Score display
+  document.getElementById('res-score').textContent = result.score+'/'+result.total;
+  document.getElementById('res-pct').textContent = result.pct+'%';
+
+  const intEl = document.getElementById('res-int');
+  intEl.textContent = result.intScore;
+  intEl.className = result.intScore>=80?'orb safe':result.intScore>=50?'orb warn':'orb danger';
+  intEl.style.fontSize='32px';intEl.style.fontWeight='900';
+
+  // Risk score card
+  const riskVal = Math.max(0, 100 - result.intScore);
+  const riskEl = document.getElementById('res-risk');
+  if(riskEl){
+    riskEl.textContent = riskVal;
+    riskEl.className = riskVal<=20?'orb safe':riskVal<=50?'orb warn':'orb danger';
+    riskEl.style.fontSize='32px';riskEl.style.fontWeight='900';
+  }
+
+  // Verdict
+  const verdEl = document.getElementById('res-verdict');
+  const vcard  = document.getElementById('res-verdict-card');
+  if(result.pct>=40 && result.intScore>=60){ verdEl.textContent='PASS'; verdEl.style.color='var(--grn)'; vcard.style.borderColor='rgba(0,255,157,.4)'; }
+  else if(result.pct<40){ verdEl.textContent='FAIL'; verdEl.style.color='var(--red)'; vcard.style.borderColor='rgba(255,36,68,.4)'; }
+  else { verdEl.textContent='REVIEW'; verdEl.style.color='var(--amber)'; vcard.style.borderColor='rgba(255,184,0,.4)'; }
+  document.getElementById('res-sub-name').textContent = result.subject;
+
+  // Violations
+  const vcnt = document.getElementById('res-vcount');
+  vcnt.textContent = result.violations.length+' violations';
+  vcnt.className = result.violations.length>5?'badge b-r':result.violations.length>2?'badge b-a':'badge b-g';
+
+  const vlist = document.getElementById('res-vlist');
+  if(result.violations.length===0){
+    vlist.innerHTML='<div style="color:var(--grn);font-size:11px;font-family:\'JetBrains Mono\',monospace">✓ No violations recorded.</div>';
+  } else {
+    vlist.innerHTML = result.violations.map(v=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(255,36,68,.04);border:1px solid rgba(255,36,68,.15);border-radius:6px;font-size:11px">
+        <span>${v.icon||'⚠'}</span>
+        <span style="flex:1;color:var(--t1)">${v.text}</span>
+        <span class="badge ${v.sev==='crit'||v.sev==='high'?'b-r':v.sev==='med'?'b-a':'b-g'}" style="font-size:8px">${v.sev?.toUpperCase()||'LOW'}</span>
+        <span style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace">${v.t}</span>
+      </div>`).join('');
+  }
+
+  showV('vResults');
+}
+
+// Generate and "send" a PDF report to admin portal
+function sendReportToAdmin(result){
+  // Generate printable HTML report as blob and store in APP for admin
+  const riskScore = 100 - result.intScore;
+  const riskLevel = riskScore>=60?'HIGH RISK':riskScore>=30?'MEDIUM RISK':'LOW RISK';
+  const riskColor = riskScore>=60?'#ff2444':riskScore>=30?'#ffb800':'#00ff9d';
+
+  const malpractice = result.violations.filter(v=>['crit','high'].includes(v.sev));
+
+  const pdfHtml = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>ProctorAI Exam Report — ${result.name}</title>
+<style>
+  body{font-family:Arial,sans-serif;margin:0;padding:30px;background:#fff;color:#111}
+  .header{background:linear-gradient(135deg,#010305,#0a1420);color:#00f5ff;padding:24px 30px;border-radius:8px;margin-bottom:24px}
+  .logo{font-size:28px;font-weight:900;letter-spacing:6px;color:#00f5ff}
+  .subtitle{font-size:11px;letter-spacing:3px;color:#5090b8;margin-top:4px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .card{background:#f5f9ff;border:1px solid #dde8f0;border-radius:8px;padding:14px;text-align:center}
+  .card-lbl{font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;margin-bottom:6px}
+  .card-val{font-size:26px;font-weight:900;color:#0a1420}
+  .risk-banner{padding:14px 20px;border-radius:8px;margin-bottom:20px;background:${riskScore>=60?'#fff0f2':riskScore>=30?'#fffbf0':'#f0fff8'};border:2px solid ${riskColor};display:flex;align-items:center;gap:16px}
+  .risk-lbl{font-size:22px;font-weight:900;color:${riskColor}}
+  .section-title{font-size:13px;font-weight:700;letter-spacing:1px;color:#0a1420;border-bottom:2px solid #00f5ff;padding-bottom:6px;margin:18px 0 10px}
+  .vrow{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:5px;margin-bottom:5px;background:#f8faff;border-left:3px solid ${riskColor}}
+  .badge{padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700}
+  .b-high{background:#fff0f2;color:#cc1030;border:1px solid #cc1030}
+  .b-med{background:#fffbf0;color:#cc8800;border:1px solid #cc8800}
+  .b-low{background:#f0fff8;color:#008050;border:1px solid #008050}
+  .footer{margin-top:30px;padding-top:14px;border-top:1px solid #dde;font-size:10px;color:#888;display:flex;justify-content:space-between}
+  table{width:100%;border-collapse:collapse;margin-bottom:14px}
+  th{background:#0a1420;color:#00f5ff;padding:9px 12px;font-size:10px;letter-spacing:1px;text-align:left}
+  td{padding:8px 12px;font-size:12px;border-bottom:1px solid #eee}
+  tr:nth-child(even) td{background:#f8faff}
+</style></head><body>
+<div class="header">
+  <div class="logo">PROCTOR<span style="color:#b060ff">AI</span></div>
+  <div class="subtitle">SMART ONLINE EXAM INTEGRITY SYSTEM — OFFICIAL REPORT</div>
+  <div style="margin-top:12px;font-size:11px;color:#5090b8">Generated: ${new Date().toLocaleString()} &nbsp;|&nbsp; Submitted By: ${result.name} (${result.id})</div>
+</div>
+
+<div class="grid">
+  <div class="card"><div class="card-lbl">Score</div><div class="card-val" style="color:#0070cc">${result.score}/${result.total}</div><div style="font-size:11px;color:#888">${result.pct}%</div></div>
+  <div class="card"><div class="card-lbl">Integrity</div><div class="card-val" style="color:${result.intScore>=80?'#008050':result.intScore>=50?'#cc8800':'#cc1030'}">${result.intScore}/100</div></div>
+  <div class="card"><div class="card-lbl">Violations</div><div class="card-val" style="color:${result.violations.length>3?'#cc1030':'#008050'}">${result.violations.length}</div></div>
+  <div class="card"><div class="card-lbl">Risk Score</div><div class="card-val" style="color:${riskColor}">${riskScore}/100</div></div>
+</div>
+
+<div class="risk-banner">
+  <div style="font-size:36px">${riskScore>=60?'🚨':riskScore>=30?'⚠️':'✅'}</div>
+  <div>
+    <div class="risk-lbl">${riskLevel}</div>
+    <div style="font-size:12px;color:#444;margin-top:2px">Overall Risk Score: <b>${riskScore}/100</b> &nbsp;|&nbsp; Integrity Score: <b>${result.intScore}/100</b> &nbsp;|&nbsp; Auto-Submit: <b>${result.autoSubmit?'Yes (timeout)':'No'}</b></div>
+  </div>
+</div>
+
+<div class="section-title">STUDENT DETAILS</div>
+<table>
+  <tr><th>Name</th><th>Student ID</th><th>Subject</th><th>Exam Time</th><th>Verdict</th></tr>
+  <tr>
+    <td><b>${result.name}</b></td>
+    <td>${result.id}</td>
+    <td>${result.subject}</td>
+    <td>${result.timeSubmitted}</td>
+    <td><b style="color:${result.pct>=40&&result.intScore>=60?'#008050':result.pct<40?'#cc1030':'#cc8800'}">${result.pct>=40&&result.intScore>=60?'PASS':result.pct<40?'FAIL':'UNDER REVIEW'}</b></td>
+  </tr>
+</table>
+
+<div class="section-title">MALPRACTICE & VIOLATIONS (${result.violations.length} events)</div>
+${result.violations.length===0
+  ? '<div style="padding:12px;background:#f0fff8;border-radius:6px;color:#008050;font-size:12px">✓ No violations detected during the exam session.</div>'
+  : result.violations.map(v=>`<div class="vrow"><span style="font-size:16px">${v.icon||'⚠'}</span><span style="flex:1;font-size:12px">${v.text}</span><span class="badge ${v.sev==='crit'||v.sev==='high'?'b-high':v.sev==='med'?'b-med':'b-low'}">${v.sev?.toUpperCase()||'LOW'}</span><span style="font-size:10px;color:#888">${v.t}</span></div>`).join('')
+}
+
+${malpractice.length>0?`
+<div class="section-title">HIGH-RISK MALPRACTICE SUMMARY</div>
+<table>
+  <tr><th>Violation</th><th>Severity</th><th>Time</th></tr>
+  ${malpractice.map(v=>`<tr><td>${v.icon||'⚠'} ${v.text}</td><td style="color:#cc1030;font-weight:700">${v.sev?.toUpperCase()}</td><td>${v.t}</td></tr>`).join('')}
+</table>`:''}
+
+<div class="section-title">RECOMMENDATIONS</div>
+<div style="padding:12px;background:#f8faff;border-radius:6px;font-size:12px;line-height:2">
+${riskScore>=60?'<b style="color:#cc1030">⚠ HIGH RISK:</b> Manual review strongly recommended. Multiple critical violations detected.<br>':''}
+${result.violations.some(v=>v.text.toLowerCase().includes('phone')||v.text.toLowerCase().includes('mobile'))?'• 📱 Mobile phone detected — physical inspection advised.<br>':''}
+${result.violations.some(v=>v.text.toLowerCase().includes('tab'))?'• 🖥️ Tab switching detected — possible external resource access.<br>':''}
+${result.violations.some(v=>v.text.toLowerCase().includes('person')||v.text.toLowerCase().includes('face'))?'• 👥 Multiple persons / face anomaly — exam condition verification needed.<br>':''}
+${result.violations.some(v=>v.text.toLowerCase().includes('paste'))?'• 📋 Copy-paste attempt detected — academic integrity concern.<br>':''}
+${riskScore<30?'✓ No significant integrity concerns. Session appears clean.':''}
+</div>
+
+<div class="footer">
+  <span>ProctorAI — Smart Online Exam Integrity System</span>
+  <span>Report ID: RPT-${Date.now()}</span>
+  <span>Confidential — Admin Eyes Only</span>
+</div>
+</body></html>`;
+
+  // Store in APP for admin to access
+  const reportEntry = {
+    ...result, riskScore, riskLevel, pdfHtml, reportId:'RPT-'+Date.now(),
+    receivedAt: new Date().toLocaleTimeString()
+  };
+  APP.adminReports = APP.adminReports || [];
+  APP.adminReports.push(reportEntry);
+
+  // Push live alert to admin feed
+  pushFeed(`📨 Report received: ${result.name} — Risk: ${riskLevel} (${riskScore}/100)`,'info');
+
+  // If admin reports tab exists, refresh it
+  if(document.getElementById('tab-reports')){ renderReports(); }
+}
+
+function downloadMyReport(){
+  const last = (APP.completedExams||[]).slice(-1)[0];
+  if(!last){ showAlert('No Report','No exam report available.'); return; }
+  const r = (APP.adminReports||[]).find(r=>r.id===last.id)||last;
+  if(r&&r.pdfHtml){
+    const blob = new Blob([r.pdfHtml],{type:'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ProctorAI_Report_${r.name?.replace(/\s/g,'_')}_${Date.now()}.html`;
+    a.click();
+  }
+}
+
+function goHomeFromResults(){
+  APP.answers={};APP.violations=[];APP.intScore=100;APP.tabCnt=0;APP.pasteCnt=0;APP.currentQ=0;APP.timeLeft=3600;
+  if(APP.timerId)clearInterval(APP.timerId);
+  showV('vAuth');
+  switchRole('student');
+}
+
+function retakeExamFlow(){
+  APP.answers={};APP.violations=[];APP.intScore=100;APP.tabCnt=0;APP.pasteCnt=0;APP.currentQ=0;APP.timeLeft=3600;
+  if(APP.timerId)clearInterval(APP.timerId);
+  showV('vSetup');
 }
 
 // ═══════════════════════════════════════════════
@@ -1911,6 +2541,7 @@ function initAdmin(){
   renderExamList();
   renderStuTable();
   initMessages();
+  renderRegisteredStudents();
   document.getElementById('nb-msg').style.display='';
   startAdminLoop();
   // Request camera immediately so admin monitor has real video ready
@@ -1923,6 +2554,7 @@ function gotoTab(tab){
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));
   if(tab==='monitor')renderMonitorGrid();
   if(tab==='analytics')initCharts();
+  if(tab==='reports'){renderReports();renderRegisteredStudents();}
 }
 
 // ── DASHBOARD ──
@@ -2106,9 +2738,10 @@ function startCardFaceLoop(vid, can, st, idx, mini){
 
 // Simulated canvas loop for when no stream
 function runSimCanvasLoop(can, st, mini){
+  const idx = APP.students.indexOf(st);
   const loop=()=>{
     if(!document.getElementById(can.id)) return;
-    drawSimCanvas(can, st);
+    drawStudentCanvas(can, st, idx>=0?idx:0);
     setTimeout(()=>requestAnimationFrame(loop), mini ? 1000 : 600);
   };
   requestAnimationFrame(loop);
@@ -2253,6 +2886,9 @@ function selectStudent(idx){
   document.getElementById('dp-int').textContent=st.score+'%';
   document.getElementById('dp-int').style.color=st.score>=80?'var(--grn)':st.score>=50?'var(--amber)':'var(--red)';
   document.getElementById('dp-viol').textContent=st.viol;
+  const rsk=st.riskScore||0;
+  const rskEl=document.getElementById('dp-risk');
+  if(rskEl){rskEl.textContent=rsk+'%';rskEl.style.color=rsk>=70?'var(--red)':rsk>=40?'var(--amber)':'var(--grn)';}
   document.getElementById('dp-status').textContent=st.status.toUpperCase();
   document.getElementById('dp-status').style.color=st.status==='flagged'?'var(--red)':st.status==='suspicious'?'var(--amber)':'var(--grn)';
 
@@ -2286,10 +2922,11 @@ function selectStudent(idx){
     }
   } else {
     dpv.style.display='none';
-    // Simulated canvas loop for detail
+    // Simulated canvas loop for detail — use indexed student canvas
+    const stuIdx = APP.students.indexOf(st);
     const simLoop=()=>{
       if(!APP._detailLoopActive||!document.getElementById('dp').classList.contains('show'))return;
-      drawSimCanvas(dpc,st);
+      drawStudentCanvas(dpc,st,stuIdx>=0?stuIdx:0);
       setTimeout(()=>requestAnimationFrame(simLoop),500);
     };
     requestAnimationFrame(simLoop);
@@ -2439,7 +3076,11 @@ function renderStuTable(filter='',statusFilter='all'){
   });
   document.getElementById('stu-cnt').textContent=list.length+' students';
   list.forEach(st=>{
+    initRiskScore(st);
     const col=st.score>=80?'var(--grn)':st.score>=50?'var(--amber)':'var(--red)';
+    const risk=st.riskScore||0;
+    const riskCol=risk>=70?'var(--red)':risk>=40?'var(--amber)':'var(--grn)';
+    const riskLbl=risk>=70?'HIGH':risk>=40?'MED':'LOW';
     const init=st.name.split(' ').map(n=>n[0]).join('');
     const row=document.createElement('div');row.className='stu-tbl-row';
     row.innerHTML=`
@@ -2451,6 +3092,7 @@ function renderStuTable(filter='',statusFilter='all'){
       <div style="font-size:11px;color:var(--t2)">${st.dept.split(' ')[0]}</div>
       <div style="font-weight:700;color:${col};font-family:'JetBrains Mono',monospace;font-size:11px">${st.score}%</div>
       <div style="font-size:11px;color:${st.viol>5?'var(--red)':st.viol>2?'var(--amber)':'var(--t2)'};font-weight:600">${st.viol}</div>
+      <div id="risk-${st.id}"><span style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:${riskCol}">${risk}%</span> <span class="badge ${risk>=70?'b-r':risk>=40?'b-a':'b-g'}">${riskLbl}</span></div>
       <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
         <span class="badge ${st.status==='flagged'?'b-r':st.status==='suspicious'?'b-a':'b-g'}" style="font-size:8px">${st.status.toUpperCase()}</span>
         <button class="ea-btn ea-view" style="font-size:10px;padding:3px 9px" onclick="viewStuDetail('${st.id}')">View</button>
@@ -2601,48 +3243,338 @@ async function genReport(){
   btn.disabled=false;btn.textContent='⬡ GENERATE AI REPORT';
 }
 
+// ── REGISTERED STUDENTS (for admin reports tab) ──
+function renderRegisteredStudents(){
+  const listEl = document.getElementById('reg-stu-list');
+  if(!listEl) return;
+  const students = APP.users.filter(u=>u.role==='student');
+  // Merge with active exam students
+  const allStu = [...students];
+  APP.students.forEach(s=>{
+    if(!allStu.find(u=>u.sid===s.id)){
+      allStu.push({name:s.name,sid:s.id,dept:s.dept,email:s.id.toLowerCase()+'@student.edu',_active:true,status:s.status});
+    }
+  });
+
+  const cntEl=document.getElementById('reg-count');
+  if(cntEl) cntEl.textContent=allStu.length+' registered';
+
+  listEl.innerHTML = allStu.map(u=>{
+    const active = APP.students.find(s=>s.id===u.sid);
+    const status = active ? active.status : 'registered';
+    const statusBadge = status==='flagged'?'b-r':status==='suspicious'?'b-a':status==='active'?'b-g':'b-c';
+    const loginTime = active ? `<span style="color:var(--grn);font-size:10px">● LIVE NOW</span>` : `<span style="color:var(--t3);font-size:10px">${u._lastLogin||'Not in session'}</span>`;
+    return `<div class="stu-tbl-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr">
+      <div style="display:flex;align-items:center;gap:9px">
+        <div class="stu-avatar">${u.name.charAt(0)}</div>
+        <div><div style="font-size:12px;font-weight:600">${u.name}</div><div style="font-size:10px;color:var(--t2)">${u.email||''}</div></div>
+      </div>
+      <span style="font-size:11px;font-family:'JetBrains Mono',monospace">${u.sid||'—'}</span>
+      <span style="font-size:11px;color:var(--t1)">${u.dept||'—'}</span>
+      <span class="badge ${statusBadge}" style="font-size:8px;justify-self:start">${status.toUpperCase()}</span>
+      ${loginTime}
+    </div>`;
+  }).join('');
+}
+
+// ── REPORTS (auto-received from students) ──
+function renderReports(){
+  const container = document.getElementById('reports-container');
+  if(!container) return;
+  const reports = APP.adminReports||[];
+
+  // Update badge
+  const nbRep = document.getElementById('nb-reports');
+  if(nbRep){ nbRep.textContent=reports.length; nbRep.style.display=reports.length?'':'none'; }
+  const repCount = document.getElementById('rep-count');
+  if(repCount) repCount.textContent=reports.length;
+
+  if(reports.length===0){
+    container.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:12px">
+      <div style="font-size:48px;margin-bottom:12px;opacity:.3">📨</div>
+      <div>No reports received yet.</div>
+      <div style="font-size:10px;margin-top:6px;color:var(--t4)">Reports appear here automatically when students submit their exams.</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = reports.slice().reverse().map((r,i)=>{
+    const riskColor = r.riskScore>=60?'var(--red)':r.riskScore>=30?'var(--amber)':'var(--grn)';
+    const riskBadge = r.riskScore>=60?'b-r':r.riskScore>=30?'b-a':'b-g';
+    const verdictCol = r.pct>=40&&r.intScore>=60?'var(--grn)':r.pct<40?'var(--red)':'var(--amber)';
+    return `<div style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--bdr);border-radius:12px;padding:16px 20px;margin-bottom:12px;animation:slideR .3s ease" id="report-card-${i}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(0,245,255,.1),rgba(176,96,255,.1));border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:700;font-size:16px;color:var(--cyan)">${r.name.charAt(0)}</div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--t0)">${r.name}</div>
+            <div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">${r.id} &nbsp;·&nbsp; ${r.subject}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="badge ${riskBadge}" style="font-size:9px">⚡ ${r.riskLevel}</span>
+          <span style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace">${r.receivedAt||r.timeSubmitted}</span>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px">
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:10px;text-align:center">
+          <div style="font-size:8px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px">SCORE</div>
+          <div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--cyan)">${r.score}/${r.total}</div>
+          <div style="font-size:9px;color:var(--t2)">${r.pct}%</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:10px;text-align:center">
+          <div style="font-size:8px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px">INTEGRITY</div>
+          <div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:${r.intScore>=80?'var(--grn)':r.intScore>=50?'var(--amber)':'var(--red)'}">${r.intScore}</div>
+          <div style="font-size:9px;color:var(--t2)">/100</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:10px;text-align:center">
+          <div style="font-size:8px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px">RISK SCORE</div>
+          <div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:${riskColor}">${r.riskScore}</div>
+          <div style="font-size:9px;color:var(--t2)">/100</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:10px;text-align:center">
+          <div style="font-size:8px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px">VIOLATIONS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:${r.violations.length>3?'var(--red)':r.violations.length>0?'var(--amber)':'var(--grn)'}">${r.violations.length}</div>
+          <div style="font-size:9px;color:var(--t2)">events</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:10px;text-align:center">
+          <div style="font-size:8px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:4px">VERDICT</div>
+          <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:${verdictCol}">${r.pct>=40&&r.intScore>=60?'PASS':r.pct<40?'FAIL':'REVIEW'}</div>
+        </div>
+      </div>
+
+      <!-- Violations quick list -->
+      ${r.violations.length>0?`
+      <div style="margin-bottom:12px">
+        <div style="font-size:9px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:6px">MALPRACTICE DETECTED:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          ${r.violations.map(v=>`<span style="background:rgba(255,36,68,.06);border:1px solid rgba(255,36,68,.2);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--t1)">${v.icon||'⚠'} ${v.text}</span>`).join('')}
+        </div>
+      </div>`:'<div style="padding:7px;background:rgba(0,255,157,.05);border-radius:5px;font-size:10px;color:var(--grn);margin-bottom:10px;font-family:\'JetBrains Mono\',monospace">✓ No violations detected</div>'}
+
+      <!-- Actions -->
+      <div style="display:flex;gap:8px">
+        <button onclick="viewFullReport(${reports.length-1-i})" style="padding:7px 16px;border-radius:5px;border:1px solid var(--cyan3);background:rgba(0,245,255,.06);color:var(--cyan);font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Exo 2',sans-serif" onmouseover="this.style.background='var(--cyan)';this.style.color='#000'" onmouseout="this.style.background='rgba(0,245,255,.06)';this.style.color='var(--cyan)'">👁 VIEW FULL REPORT</button>
+        <button onclick="downloadReportIdx(${reports.length-1-i})" style="padding:7px 16px;border-radius:5px;border:1px solid var(--grn3);background:rgba(0,255,157,.06);color:var(--grn);font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Exo 2',sans-serif" onmouseover="this.style.background='var(--grn)';this.style.color='#000'" onmouseout="this.style.background='rgba(0,255,157,.06)';this.style.color='var(--grn)'">📥 DOWNLOAD PDF</button>
+        ${r.riskScore>=60?`<button onclick="flagStudent('${r.name}')" style="padding:7px 16px;border-radius:5px;border:1px solid var(--red3);background:rgba(255,36,68,.06);color:var(--red);font-size:11px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Exo 2',sans-serif" onmouseover="this.style.background='var(--red)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,36,68,.06)';this.style.color='var(--red)'">🚨 FLAG FOR REVIEW</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function viewFullReport(idx){
+  const r = (APP.adminReports||[])[idx];
+  if(!r||!r.pdfHtml){ showAlert('No Report','Report data not available.'); return; }
+  const w = window.open('','_blank','width=900,height=700,scrollbars=yes');
+  if(w){ w.document.write(r.pdfHtml); w.document.close(); }
+  else { showAlert('Pop-up Blocked','Please allow pop-ups to view the full report.'); }
+}
+
+function downloadReportIdx(idx){
+  const r = (APP.adminReports||[])[idx];
+  if(!r||!r.pdfHtml){ showAlert('No Report','Report not available.'); return; }
+  const blob = new Blob([r.pdfHtml],{type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ProctorAI_Report_${r.name?.replace(/\s/g,'_')}_${r.reportId||Date.now()}.html`;
+  a.click();
+}
+
+function exportAllReports(){
+  const reports = APP.adminReports||[];
+  if(!reports.length){ showAlert('No Reports','No reports to export yet.'); return; }
+  reports.forEach((r,i)=>{ if(r.pdfHtml){ setTimeout(()=>downloadReportIdx(i),i*300); } });
+}
+
+function flagStudent(name){
+  const st = APP.students.find(s=>s.name===name);
+  if(st){ st.status='flagged'; updateTopStats(); pushFeed(`🚨 ${name} flagged by admin after report review`,'danger'); }
+  showAlert('Student Flagged',`${name} has been flagged for review.`);
+  renderReports();
+}
+
+// ── RISK SCORE HELPERS ──
+function initRiskScore(st){
+  if(st.riskScore===undefined) st.riskScore=0;
+}
+function increaseRisk(st, pts, reason){
+  initRiskScore(st);
+  st.riskScore=Math.min(100,st.riskScore+pts);
+  st.viol++;
+  pushFeed(`🚨 Risk +${pts} for ${st.name}: ${reason}`,'danger');
+  updateTopStats();
+  updateRiskUI(st);
+}
+function updateRiskUI(st){
+  // Update in admin student table rows
+  const el=document.getElementById('risk-'+st.id);
+  if(!el)return;
+  const r=st.riskScore||0;
+  const col=r>=70?'var(--red)':r>=40?'var(--amber)':'var(--grn)';
+  const lbl=r>=70?'HIGH':r>=40?'MED':'LOW';
+  el.innerHTML=`<span style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:${col}">${r}%</span> <span class="badge ${r>=70?'b-r':r>=40?'b-a':'b-g'}">${lbl}</span>`;
+}
+
+// ── INDIVIDUAL STUDENT CANVAS SEEDS ──
+// Each student gets deterministic look: different skin tone, shirt color, gaze pattern, noise seed
+const STU_SEEDS=[
+  {skin:[200,160,120],shirt:[30,80,140],gazePattern:[0,0,0,0,-18,0],noiseBase:0.018},
+  {skin:[160,110,80], shirt:[140,40,40], gazePattern:[0,0,18,0,0,-12],noiseBase:0.022},
+  {skin:[220,180,140],shirt:[40,120,60], gazePattern:[0,0,0,18,0,0], noiseBase:0.015},
+  {skin:[180,130,100],shirt:[100,40,140],gazePattern:[0,0,0,0,0,0],  noiseBase:0.020},
+  {skin:[240,200,160],shirt:[140,100,30],gazePattern:[-18,0,0,0,0,-12],noiseBase:0.012},
+  {skin:[150,100,70], shirt:[30,130,130],gazePattern:[0,0,0,0,18,0], noiseBase:0.025},
+  {skin:[210,170,130],shirt:[80,80,160], gazePattern:[0,0,-18,0,0,0],noiseBase:0.017},
+  {skin:[170,120,90], shirt:[50,140,80], gazePattern:[0,0,0,0,0,0],  noiseBase:0.019},
+];
+
+// ── INDIVIDUAL STUDENT CANVAS DRAW ──
+function drawStudentCanvas(can,st,idx){
+  if(!can)return;
+  const W=can.width||210,H=can.height||157;
+  const ctx=can.getContext('2d');
+  const seed=STU_SEEDS[idx%STU_SEEDS.length];
+  const t=Date.now()*0.001;
+
+  // Unique background per student (slight hue variation)
+  const bgH=idx*37%360;
+  ctx.fillStyle=`hsl(${bgH},20%,4%)`;ctx.fillRect(0,0,W,H);
+
+  // Unique noise density per student
+  for(let n=0;n<120;n++){
+    ctx.fillStyle=`rgba(255,255,255,${seed.noiseBase*(0.5+Math.random())})`;
+    ctx.fillRect(Math.random()*W,Math.random()*H,1,1);
+  }
+
+  // Subtle body glow unique color
+  const [sr,sg,sb]=seed.shirt;
+  ctx.beginPath();ctx.ellipse(W*.5,H*.75,H*.2,H*.28,0,0,Math.PI*2);
+  ctx.fillStyle=`rgba(${sr},${sg},${sb},0.12)`;ctx.fill();
+
+  // Head with unique skin tone, slight bob per student
+  const bob=Math.sin(t*0.8+idx*1.3)*2;
+  const jx=(Math.sin(t*0.4+idx*2.1))*2,jy=bob;
+  const [skr,skg,skb]=seed.skin;
+  ctx.beginPath();ctx.arc(W*.5+jx,H*.27+jy,H*.14,0,Math.PI*2);
+  ctx.fillStyle=`rgba(${skr},${skg},${skb},0.18)`;ctx.fill();
+
+  // Unique gaze line from seed
+  const gp=seed.gazePattern;
+  const gFrame=Math.floor(t*0.6+idx)%gp.length;
+  const gox=gp[gFrame]||0,goy=(gFrame===5)?-12:0;
+
+  // Face bounding box color by status
+  const col=st.status==='flagged'?'#ff2444':st.status==='suspicious'?'#ffb800':'#00f5ff';
+  const riskPulse=st.riskScore>=70?(0.5+0.5*Math.sin(t*4)):1;
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.shadowColor=col;ctx.shadowBlur=6*riskPulse;
+  const bx=W*.26+jx,by=H*.09+jy,bw=W*.48,bh=H*.37;
+  const cs=8;
+  [[bx,by],[bx+bw,by],[bx,by+bh],[bx+bw,by+bh]].forEach(([cx,cy],k)=>{
+    const sx=k%2?-1:1,sy=k<2?1:-1;
+    ctx.beginPath();ctx.moveTo(cx,cy+sy*cs);ctx.lineTo(cx,cy);ctx.lineTo(cx+sx*cs,cy);ctx.stroke();
+  });
+  ctx.shadowBlur=0;
+
+  // Unique landmark positions per student
+  const lmOffsets=[[.28+idx*.01,.32],[.72-.01*idx,.32],[.5,.55],[.34,.72],[.66,.72]];
+  ctx.fillStyle=col;
+  lmOffsets.forEach(([lx,ly])=>{
+    ctx.beginPath();ctx.arc(bx+bw*lx,by+bh*ly,1.8,0,Math.PI*2);ctx.fill();
+  });
+
+  // Gaze line
+  const ex=bx+bw*.5,ey=by+bh*.3;
+  ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex+gox,ey+goy);
+  ctx.strokeStyle='rgba(0,245,255,.5)';ctx.lineWidth=1.5;ctx.stroke();
+
+  // Student ID label unique to each
+  const conf=(85+idx*1.3+Math.sin(t+idx)*3).toFixed(1);
+  ctx.fillStyle='rgba(0,0,0,.85)';ctx.fillRect(bx,by-16,94,14);
+  ctx.fillStyle=col;ctx.font='8px JetBrains Mono';
+  ctx.fillText(`${st.id} ${conf}%`,bx+3,by-4);
+
+  // Risk bar at bottom if risk > 0
+  const risk=st.riskScore||0;
+  if(risk>0){
+    const barCol=risk>=70?'#ff2444':risk>=40?'#ffb800':'#00ff9d';
+    ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,H-14,W,14);
+    ctx.fillStyle=barCol;ctx.fillRect(0,H-14,(W*risk/100),14);
+    ctx.fillStyle='#fff';ctx.font='7px JetBrains Mono';
+    ctx.fillText(`RISK: ${risk}%`,4,H-4);
+  }
+
+  // LIVE badge
+  ctx.fillStyle='rgba(255,36,68,.9)';ctx.beginPath();ctx.arc(W-10,8,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillRect(W-52,2,42,12);
+  ctx.fillStyle='#ff2444';ctx.font='7px JetBrains Mono';ctx.fillText('● LIVE',W-50,11);
+
+  // HUD corners
+  ctx.strokeStyle='rgba(0,245,255,.5)';ctx.lineWidth=1;
+  const hcs=8;
+  [[0,0],[W,0],[0,H],[W,H]].forEach(([x,y],k)=>{
+    const sx=k%2?-1:1,sy=k<2?1:-1;
+    ctx.beginPath();ctx.moveTo(x,y+sy*hcs);ctx.lineTo(x,y);ctx.lineTo(x+sx*hcs,y);ctx.stroke();
+  });
+}
+
 // ── ADMIN LOOP ──
 let admLoopStarted=false;
 function startAdminLoop(){
   if(admLoopStarted)return;admLoopStarted=true;
+  // Initialize risk scores
+  APP.students.forEach(st=>initRiskScore(st));
   setInterval(()=>{
-    // Redraw sim canvases for all grids
+    // Redraw individual student canvases — each student gets their own unique appearance
     APP.students.forEach((st,i)=>{
       [`sc-m-${i}`,`sc-d-${i}`].forEach(cid=>{
         const c=document.getElementById(cid);
-        if(c&&!(i===0&&APP.stream))drawSimCanvas(c,st);
+        // Only draw sim canvas if student doesn't have real stream (index 0 with real cam)
+        if(c&&!(i===0&&APP.stream)) drawStudentCanvas(c,st,i);
       });
     });
-    // Random alert events
+    // Random malpractice events — each increases risk score
     if(Math.random()<.09){
       const st=APP.students[Math.floor(Math.random()*APP.students.length)];
       const evts=[
-        {msg:`⚠ Gaze deviation: ${st.name}`,col:'warn'},
-        {msg:`🚨 Tab switch detected: ${st.name}`,col:'danger'},
-        {msg:`⚠ Audio spike: ${st.name}`,col:'warn'},
-        {msg:`📱 Unknown object: ${st.name}`,col:'danger'},
-        {msg:`⬡ Face confidence drop: ${st.name}`,col:'warn'},
-        {msg:`👥 Multi-person check: ${st.name}`,col:'danger'},
+        {msg:`⚠ Gaze deviation: ${st.name}`,    col:'warn',  riskPts:5,  reason:'Gaze away from screen'},
+        {msg:`🚨 Tab switch detected: ${st.name}`,col:'danger',riskPts:15, reason:'Tab switch detected'},
+        {msg:`⚠ Audio spike: ${st.name}`,         col:'warn',  riskPts:8,  reason:'High audio level'},
+        {msg:`📱 Mobile phone detected: ${st.name}`,col:'danger',riskPts:20,reason:'Mobile phone in frame'},
+        {msg:`⬡ Face confidence drop: ${st.name}`,col:'warn',  riskPts:7,  reason:'Face confidence low'},
+        {msg:`👥 Multi-person: ${st.name}`,        col:'danger',riskPts:18, reason:'Multiple persons detected'},
+        {msg:`📱 Electronic device: ${st.name}`,   col:'danger',riskPts:20, reason:'Electronic device visible'},
+        {msg:`⌚ Smartwatch visible: ${st.name}`,  col:'warn',  riskPts:10, reason:'Smartwatch visible'},
       ];
       const ev=evts[Math.floor(Math.random()*evts.length)];
-      pushFeed(ev.msg,ev.col);
-      if(ev.col==='danger'&&Math.random()<.2&&st.status==='active'){
-        st.status='suspicious';st.viol++;updateTopStats();
+      if(ev.col==='danger'){
+        increaseRisk(st, ev.riskPts, ev.reason);
+        if(st.status==='active') st.status='suspicious';
+      } else {
+        increaseRisk(st, ev.riskPts, ev.reason);
       }
+      pushFeed(ev.msg,ev.col);
+      if(st.riskScore>=70&&st.status!=='flagged') st.status='flagged';
     }
+    // Refresh reports badge
+    const nbRep=document.getElementById('nb-reports');
+    if(nbRep&&APP.adminReports?.length){ nbRep.textContent=APP.adminReports.length; nbRep.style.display=''; }
   },2000);
 }
 
 function updateTopStats(){
   const act=APP.students.filter(s=>s.status==='active').length;
   const flg=APP.students.filter(s=>s.status==='flagged').length;
-  const avg=Math.round(APP.students.reduce((a,b)=>a+b.score,0)/APP.students.length);
+  const avg=APP.students.length?Math.round(APP.students.reduce((a,b)=>a+b.score,0)/APP.students.length):0;
   const wrn=APP.students.filter(s=>s.status==='suspicious').length;
+  const reg=APP.users.filter(u=>u.role==='student').length;
   const updates=[
     {ids:['sc-act','aq-act'],val:act,cls:'cyan'},
     {ids:['sc-int'],val:avg+'%',cls:'safe'},
     {ids:['sc-wrn'],val:wrn,cls:'warn'},
     {ids:['sc-flg','aq-flg'],val:flg,cls:'danger'},
+    {ids:['sc-reg'],val:reg,cls:'violet'},
   ];
   updates.forEach(u=>u.ids.forEach(id=>{
     const el=document.getElementById(id);
